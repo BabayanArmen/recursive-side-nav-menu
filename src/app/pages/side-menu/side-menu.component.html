@@ -1,0 +1,31 @@
+<ul class="menu">
+    <ng-container
+      *ngTemplateOutlet="Recursion; context:{ list }"
+    ></ng-container>
+</ul>
+
+<ng-template #Recursion let-list="list">
+
+  <li *ngFor="let item of list">
+
+    <div class="menuItem" 
+    (click)="openSubMenu(item, list)" 
+    [ngClass]="{'isParentOpened': item.isOpened && !item.hasParent}"
+    [routerLinkActive]="'active'"
+    routerLink="{{item.route}}">
+      <p style="padding-left: 10px;">
+        <span style="color: rgba(240, 248, 255, 0);">{{item.icon}}</span>{{ item.title }}
+      </p>
+    </div>
+
+    <div>
+      <ul  [ngClass]="{'open': item.isOpened, 'close': !item.isOpened}" *ngIf="item.child.length > 0">
+        <ng-container
+          *ngTemplateOutlet="Recursion; context:{ list: item.child }"
+        ></ng-container>
+      </ul>
+    </div>
+
+  </li>
+    
+</ng-template>
